@@ -14,7 +14,7 @@
 
 	(async () => {
 		const response = await fetch(
-			`https://api.matteopolak.com/names?offset=${size * ++page}&limit=${size}`
+			`https://api.matteopolak.com/names?offset=${size * page++}&limit=${size}`
 		);
 
 		names = await response.json();
@@ -32,7 +32,7 @@
 
 			const response = await fetch(
 				`https://api.matteopolak.com/names?offset=${
-					size * ++page
+					size * page++
 				}&limit=${size}`
 			);
 
