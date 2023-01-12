@@ -15,6 +15,9 @@
 		},
 		{
 			name: 'Definition',
+			formatter: (cell: string[]) => {
+				return cell.join('\n');
+			},
 		},
 	];
 
