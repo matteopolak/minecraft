@@ -27,6 +27,10 @@
 	"dependencies": {
 		"@sveltejs/adapter-cloudflare": "^1.0.0",
 		"agnostic-svelte": "^1.1.27",
-		"svelte-infinite-scroll": "^2.0.1"
+		"gridjs": "^5.1.0",
+		"gridjs-svelte": "^2.1.1",
+		"immer": "^9.0.17",
+		"install": "^0.13.0",
+		"materialize-css": "^1.0.0"
 	}
 }
