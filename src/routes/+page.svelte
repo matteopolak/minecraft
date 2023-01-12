@@ -47,7 +47,7 @@
 		}}
 		pagination={{
 			enabled: true,
-			limit: 15,
+			limit: 10,
 			server: {
 				url: (prev, page, limit) =>
 					`${prev}offset=${page * limit}&limit=${limit}&`,
