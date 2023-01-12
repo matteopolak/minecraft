@@ -28,8 +28,6 @@
 	<InfiniteScroll
 		threshold={size}
 		on:loadMore={async () => {
-			console.log('load more');
-
 			const response = await fetch(
 				`https://api.matteopolak.com/names?offset=${
 					size * page++
