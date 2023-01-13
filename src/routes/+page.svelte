@@ -2,13 +2,18 @@
 	import Grid from 'gridjs-svelte';
 	import dayjs from 'dayjs';
 	import relativeTime from 'dayjs/plugin/relativeTime';
+	import { onMount } from 'svelte';
+
+	let token = '';
+
+	onMount(() => {
+		const params = new URL(window.location.href);
+		token = params.searchParams.get('token')!;
+	});
 
 	dayjs.extend(relativeTime);
 
 	const indexToColumn = ['length', 'frequency', 'verifiedAt', 'updatedAt'];
-	const params = new URLSearchParams(window.location.search);
-
-	const token = params.get('token');
 	const columns = [
 		{
 			name: 'Username',
@@ -58,7 +63,7 @@
 		search={{
 			debounceTimeout: 500,
 			server: {
-				url: (prev, keyword) => `&${prev}search=${keyword}`,
+				url: (prev, keyword) => `${prev}&search=${keyword}`,
 			},
 		}}
 		pagination={{
@@ -66,7 +71,7 @@
 			limit: 10,
 			server: {
 				url: (prev, page, limit) =>
-					`&${prev}offset=${page * limit}&limit=${limit}`,
+					`${prev}&offset=${page * limit}&limit=${limit}`,
 			},
 		}}
 		server={{
@@ -88,7 +93,7 @@
 				url: (prev, columns) => {
 					return `${prev}&sort=${
 						columns[0]?.direction === 1 ? 'asc' : 'desc'
-					}&column=${indexToColumn[columns[0]?.index ?? 1]}&`;
+					}&column=${indexToColumn[columns[0]?.index ?? 1]}`;
 				},
 			},
 		}}
