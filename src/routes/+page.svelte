@@ -5,10 +5,11 @@
 
 	dayjs.extend(relativeTime);
 
+	const indexToColumn = ['username', 'frequency', 'verifiedAt', 'updatedAt'];
+
 	const columns = [
 		{
 			name: 'Username',
-			sort: false,
 			width: '10%',
 			fixedHeader: true,
 			resizable: true,
@@ -27,7 +28,6 @@
 			formatter: (cell: string) => {
 				return dayjs(cell).fromNow();
 			},
-			sort: false,
 			width: '10%',
 		},
 		{
@@ -35,7 +35,6 @@
 			formatter: (cell: string) => {
 				return dayjs(cell).fromNow();
 			},
-			sort: false,
 			width: '10%',
 		},
 		{
@@ -87,7 +86,7 @@
 				url: (prev, columns) => {
 					return `${prev}&sort=${
 						columns[0]?.direction === 1 ? 'asc' : 'desc'
-					}&`;
+					}&column=${indexToColumn[columns[0]?.index ?? 0]}&`;
 				},
 			},
 		}}
