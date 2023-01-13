@@ -6,7 +6,9 @@
 	dayjs.extend(relativeTime);
 
 	const indexToColumn = ['length', 'frequency', 'verifiedAt', 'updatedAt'];
+	const params = new URLSearchParams(window.location.search);
 
+	const token = params.get('token');
 	const columns = [
 		{
 			name: 'Username',
@@ -56,7 +58,7 @@
 		search={{
 			debounceTimeout: 500,
 			server: {
-				url: (prev, keyword) => `${prev}search=${keyword}&`,
+				url: (prev, keyword) => `&${prev}search=${keyword}`,
 			},
 		}}
 		pagination={{
@@ -64,11 +66,11 @@
 			limit: 10,
 			server: {
 				url: (prev, page, limit) =>
-					`${prev}offset=${page * limit}&limit=${limit}&`,
+					`&${prev}offset=${page * limit}&limit=${limit}`,
 			},
 		}}
 		server={{
-			url: 'https://api.matteopolak.com/names?',
+			url: `https://api.matteopolak.com/names?token=${token}`,
 			then: data =>
 				// @ts-ignore
 				data.results.map(profile => [
