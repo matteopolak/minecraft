@@ -86,7 +86,7 @@
 				url: (prev, columns) => {
 					return `${prev}&sort=${
 						columns[0]?.direction === 1 ? 'asc' : 'desc'
-					}&column=${indexToColumn[columns[0]?.index ?? 0]}&`;
+					}&column=${indexToColumn[columns[0]?.index ?? 1]}&`;
 				},
 			},
 		}}
