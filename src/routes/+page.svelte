@@ -1,5 +1,9 @@
 <script lang="ts">
 	import Grid from 'gridjs-svelte';
+	import dayjs from 'dayjs';
+	import relativeTime from 'dayjs/plugin/relativeTime';
+
+	dayjs.extend(relativeTime);
 
 	const columns = [
 		{
@@ -17,6 +21,22 @@
 			width: '10%',
 			fixedHeader: true,
 			resizable: true,
+		},
+		{
+			name: 'Created',
+			formatter: (cell: string) => {
+				return dayjs(cell).fromNow();
+			},
+			sort: false,
+			width: '10%',
+		},
+		{
+			name: 'Updated',
+			formatter: (cell: string) => {
+				return dayjs(cell).fromNow();
+			},
+			sort: false,
+			width: '10%',
 		},
 		{
 			name: 'Definition',
@@ -55,6 +75,8 @@
 				data.results.map(profile => [
 					profile.username,
 					profile.frequency,
+					profile.verifiedAt,
+					profile.updatedAt,
 					profile.definition,
 				]),
 			total: data => data.total,

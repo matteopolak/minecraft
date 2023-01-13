@@ -27,6 +27,7 @@
 	"dependencies": {
 		"@sveltejs/adapter-cloudflare": "^1.0.0",
 		"agnostic-svelte": "^1.1.27",
+		"dayjs": "^1.11.7",
 		"gridjs": "^5.1.0",
 		"gridjs-svelte": "^2.1.1",
 		"immer": "^9.0.17",
