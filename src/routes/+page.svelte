@@ -5,7 +5,7 @@
 
 	dayjs.extend(relativeTime);
 
-	const indexToColumn = ['username', 'frequency', 'verifiedAt', 'updatedAt'];
+	const indexToColumn = ['length', 'frequency', 'verifiedAt', 'updatedAt'];
 
 	const columns = [
 		{
