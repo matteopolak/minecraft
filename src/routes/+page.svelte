@@ -10,9 +10,9 @@
 			resizable: true,
 		},
 		{
-			name: 'Popularity',
+			name: 'Frequency',
 			formatter: (cell: number) => {
-				return cell.toFixed(2);
+				return (cell / 1_000_000).toFixed(2);
 			},
 			width: '10%',
 			fixedHeader: true,
@@ -29,11 +29,6 @@
 			resizable: true,
 		},
 	];
-
-	interface Profile {
-		username: string;
-		popularity: number;
-	}
 </script>
 
 <div class="paginated">
@@ -59,7 +54,7 @@
 				// @ts-ignore
 				data.results.map(profile => [
 					profile.username,
-					profile.popularity,
+					profile.frequency,
 					profile.definition,
 				]),
 			total: data => data.total,
