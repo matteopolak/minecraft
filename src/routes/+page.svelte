@@ -23,7 +23,7 @@
 			resizable: true,
 		},
 		{
-			name: 'Created',
+			name: 'Checked',
 			formatter: (cell: string) => {
 				return dayjs(cell).fromNow();
 			},
