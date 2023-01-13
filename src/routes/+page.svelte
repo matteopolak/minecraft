@@ -12,7 +12,7 @@
 		{
 			name: 'Frequency',
 			formatter: (cell: number) => {
-				return (cell / 1_000_000).toFixed(2);
+				return cell.toFixed(2);
 			},
 			width: '10%',
 			fixedHeader: true,
