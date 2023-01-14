@@ -1,16 +1,12 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import {
-		Button,
-		Table,
 		TableBody,
 		TableBodyCell,
 		TableBodyRow,
 		TableHead,
 		TableHeadCell,
-		Checkbox,
 		Pagination,
-		PaginationItem,
 		ChevronLeft,
 		ChevronRight,
 		ArrowKeyUp,
@@ -85,6 +81,8 @@
 			sortColumn = column;
 			sortDirection = 'asc';
 		}
+
+		currentPage = 0;
 	}
 
 	$: {
@@ -198,7 +196,7 @@
 	</TableBody>
 </TableSearch>
 
-<div class="flex justify-center mt-2">
+<div class="flex justify-center mt-2 sticky" data-position="bottom">
 	<Pagination
 		{pages}
 		on:previous={() => {
@@ -210,12 +208,43 @@
 		icon
 	>
 		<svelte:fragment slot="prev">
-			<span class="sr-only">Previous</span>
 			<ChevronLeft class="w-5 h-5" />
 		</svelte:fragment>
 		<svelte:fragment slot="next">
-			<span class="sr-only">Next</span>
 			<ChevronRight class="w-5 h-5" />
 		</svelte:fragment>
 	</Pagination>
+	<ul>
+		<li>
+			<button
+				class="ml-2 text-center font-medium focus:ring-2 focus:outline-none inline-flex items-center justify-center px-3 py-2 text-sm font-medium border border-gray-300 text-gray-500 bg-white hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white rounded-lg"
+				on:click={() => {
+					switch (pageSize) {
+						case 10:
+							pageSize = 25;
+							break;
+						case 25:
+							pageSize = 50;
+							break;
+						case 50:
+							pageSize = 100;
+							break;
+						case 100:
+							pageSize = 10;
+							break;
+					}
+				}}>{pageSize}</button
+			>
+		</li>
+	</ul>
 </div>
+
+<style>
+	.sticky {
+		position: sticky;
+	}
+
+	.sticky[data-position='bottom'] {
+		bottom: 0.25rem;
+	}
+</style>
