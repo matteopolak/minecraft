@@ -43,7 +43,7 @@
 	let timer: NodeJS.Timeout;
 	let data: Row[] = [];
 	let currentPage = 0;
-	let totalPages = 0;
+	let totalPages = 1;
 	let pageSize = 10;
 	let searchTerm = '';
 	let searchTermDebounced = '';
@@ -103,6 +103,13 @@
 				searchTerm ? `&search=${searchTerm}` : ''
 			}&column=${sortColumn}&sort=${sortDirection}`
 		);
+
+		if (response.status !== 200) {
+			data = [];
+			totalPages = 1;
+
+			return;
+		}
 
 		const json = await response.json();
 		data = json.results;
