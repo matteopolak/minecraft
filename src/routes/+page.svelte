@@ -96,6 +96,13 @@
 		sortColumn: string,
 		sortDirection: string
 	) {
+		if (!token) {
+			data = [];
+			totalPages = 1;
+
+			return;
+		}
+
 		const response = await fetch(
 			`https://api.matteopolak.com/names?token=${token}&offset=${
 				currentPage * pageSize
