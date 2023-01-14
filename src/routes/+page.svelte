@@ -135,6 +135,15 @@
 	{pages}
 	{totalPages}
 >
+	<caption
+		class="p-5 text-lg font-semibold text-left text-gray-900 bg-white dark:text-white dark:bg-gray-800"
+	>
+		Minecraft Name Index
+		<p class="mt-1 text-sm font-normal text-gray-500 dark:text-gray-400">
+			Browse a list of available Minecraft usernames and view their frequency in
+			the English language.
+		</p>
+	</caption>
 	<TableHead>
 		<TableHeadCell>
 			<button on:click={() => handleSort('length')}>
