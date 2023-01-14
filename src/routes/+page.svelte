@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import {
+		Badge,
 		TableBody,
 		TableBodyCell,
 		TableBodyRow,
@@ -44,7 +45,7 @@
 
 	$: {
 		pages = [
-			{ name: '1', href: `/?page=1` },
+			{ name: '1', href: `/?token=${token}&page=1` },
 			{
 				name: (currentPage + 2).toString(),
 				href: `/?token=${token}&page=${currentPage + 2}`,
@@ -68,6 +69,7 @@
 		const pageNumber = $page.url.searchParams.get('page');
 
 		if (pageNumber) {
+			$page.url.searchParams.delete('page');
 			currentPage = Math.max(0, Math.min(parseInt(pageNumber), totalPages) - 1);
 		}
 	}
@@ -112,6 +114,8 @@
 			}&column=${sortColumn}&sort=${sortDirection}`
 		);
 
+		console.log(response.status);
+
 		if (response.status !== 200) {
 			data = [];
 			totalPages = 1;
@@ -120,6 +124,7 @@
 		}
 
 		const json = await response.json();
+
 		data = json.results;
 		totalPages = Math.ceil(json.total / pageSize);
 	}
@@ -201,14 +206,29 @@
 	<TableBody tableBodyClass="divide-y">
 		{#each data as row}
 			<TableBodyRow>
-				<TableBodyCell>{row.username}</TableBodyCell>
-				<TableBodyCell>{row.frequency.toFixed(3)}</TableBodyCell>
+				<TableBodyCell>
+					{row.username}
+					<span style="float: right">
+						{#if row.username.length <= 7}
+							<Badge color="purple">Short</Badge>
+						{/if}
+						{#if row.frequency >= 0.5}
+							<Badge color="pink">Common</Badge>
+						{/if}
+						{#if new Date(row.updatedAt).getTime() > Date.now() - 86_400_000}
+							<Badge color="green">New</Badge>
+						{/if}
+					</span>
+				</TableBodyCell>
+				<TableBodyCell>
+					{row.frequency.toFixed(3)}
+				</TableBodyCell>
 				<TableBodyCell
 					><Time live relative timestamp={row.verifiedAt} /></TableBodyCell
 				>
-				<TableBodyCell
-					><Time live relative timestamp={row.updatedAt} /></TableBodyCell
-				>
+				<TableBodyCell>
+					<Time live relative timestamp={row.updatedAt} />
+				</TableBodyCell>
 			</TableBodyRow>
 		{/each}
 		{#if data.length === 0}
