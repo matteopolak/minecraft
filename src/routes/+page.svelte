@@ -15,8 +15,8 @@
 		ChevronRight,
 		ArrowKeyUp,
 		ArrowKeyDown,
+		TableSearch,
 	} from 'flowbite-svelte';
-	import TableSearch from '../components/TableSearch.svelte';
 	import dayjs from 'dayjs';
 	import relativeTime from 'dayjs/plugin/relativeTime';
 	import { page } from '$app/stores';
@@ -49,7 +49,7 @@
 	let searchTermDebounced = '';
 	let sortColumn = 'frequency';
 	let sortDirection = 'desc';
-	let token = '8L8M3iwu1XLOgtAh0R8LX8kyj0SEeUm6';
+	let token = '';
 	let pages: LinkType[] = [];
 
 	$: {
@@ -73,6 +73,8 @@
 	$: debounce(searchTermDebounced);
 
 	onMount(async () => {
+		token = $page.url.searchParams.get('token') ?? 'none';
+
 		fetchData(currentPage, pageSize, searchTerm, sortColumn, sortDirection);
 	});
 
