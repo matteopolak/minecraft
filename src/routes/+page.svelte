@@ -6,15 +6,12 @@
 		TableBodyRow,
 		TableHead,
 		TableHeadCell,
-		Pagination,
-		ChevronLeft,
-		ChevronRight,
 		ArrowKeyUp,
 		ArrowKeyDown,
-		TableSearch,
 	} from 'flowbite-svelte';
 	import dayjs from 'dayjs';
 	import relativeTime from 'dayjs/plugin/relativeTime';
+	import TableSearch from '../components/TableSearch.svelte';
 	import { page } from '$app/stores';
 	import type { LinkType } from 'flowbite-svelte/types';
 
@@ -33,7 +30,7 @@
 
 		timer = setTimeout(() => {
 			searchTerm = value;
-		}, 500);
+		}, 250);
 	};
 
 	let timer: NodeJS.Timeout;
@@ -51,10 +48,22 @@
 	$: {
 		pages = [
 			{ name: '1', href: `/?page=1` },
-			{ name: (currentPage + 2).toString(), href: `/?page=${currentPage + 2}` },
-			{ name: (currentPage + 3).toString(), href: `/?page=${currentPage + 3}` },
-			{ name: (currentPage + 4).toString(), href: `/?page=${currentPage + 4}` },
-			{ name: totalPages.toString(), href: `/?page=${totalPages}` },
+			{
+				name: (currentPage + 2).toString(),
+				href: `/?token=${token}&page=${currentPage + 2}`,
+			},
+			{
+				name: (currentPage + 3).toString(),
+				href: `/?token=${token}&page=${currentPage + 3}`,
+			},
+			{
+				name: (currentPage + 4).toString(),
+				href: `/?token=${token}&page=${currentPage + 4}`,
+			},
+			{
+				name: totalPages.toString(),
+				href: `/?token=${token}&page=${totalPages}`,
+			},
 		];
 	}
 
@@ -62,7 +71,7 @@
 		const pageNumber = $page.url.searchParams.get('page');
 
 		if (pageNumber) {
-			currentPage = parseInt(pageNumber) - 1;
+			currentPage = Math.max(0, Math.min(parseInt(pageNumber), totalPages) - 1);
 		}
 	}
 
@@ -122,8 +131,12 @@
 <TableSearch
 	placeholder="Search by username"
 	hoverable={true}
+	striped={true}
 	bind:inputValue={searchTermDebounced}
 	bind:currentPage
+	bind:pageSize
+	{pages}
+	{totalPages}
 >
 	<TableHead>
 		<TableHeadCell>
@@ -195,56 +208,3 @@
 		{/if}
 	</TableBody>
 </TableSearch>
-
-<div class="flex justify-center mt-2 sticky" data-position="bottom">
-	<Pagination
-		{pages}
-		on:previous={() => {
-			if (currentPage > 0) currentPage--;
-		}}
-		on:next={() => {
-			if (currentPage < totalPages - 1) currentPage++;
-		}}
-		icon
-	>
-		<svelte:fragment slot="prev">
-			<ChevronLeft class="w-5 h-5" />
-		</svelte:fragment>
-		<svelte:fragment slot="next">
-			<ChevronRight class="w-5 h-5" />
-		</svelte:fragment>
-	</Pagination>
-	<ul>
-		<li>
-			<button
-				class="ml-2 text-center font-medium focus:ring-2 focus:outline-none inline-flex items-center justify-center px-3 py-2 text-sm font-medium border border-gray-300 text-gray-500 bg-white hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white rounded-lg"
-				on:click={() => {
-					switch (pageSize) {
-						case 10:
-							pageSize = 25;
-							break;
-						case 25:
-							pageSize = 50;
-							break;
-						case 50:
-							pageSize = 100;
-							break;
-						case 100:
-							pageSize = 10;
-							break;
-					}
-				}}>{pageSize}</button
-			>
-		</li>
-	</ul>
-</div>
-
-<style>
-	.sticky {
-		position: sticky;
-	}
-
-	.sticky[data-position='bottom'] {
-		bottom: 0.25rem;
-	}
-</style>
