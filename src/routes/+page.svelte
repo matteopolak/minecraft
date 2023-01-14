@@ -9,6 +9,8 @@
 		TableHeadCell,
 		ArrowKeyUp,
 		ArrowKeyDown,
+		Popover,
+		InformationCircle,
 	} from 'flowbite-svelte';
 	import TableSearch from '../components/TableSearch.svelte';
 	import Time from 'svelte-time';
@@ -208,6 +210,21 @@
 			<TableBodyRow>
 				<TableBodyCell>
 					{row.username}
+					{#if row.definition.length}
+						<InformationCircle
+							class="w-5 h-5 inline fill-blue-100 dark:fill-blue-200"
+							color=""
+							variation="solid"
+						/>
+						<Popover
+							placement="right"
+							title="Definition"
+							class="w-64 whitespace-normal"
+							arrow={false}
+						>
+							{row.definition[0]}
+						</Popover>
+					{/if}
 					<span style="float: right">
 						{#if row.username.length <= 7}
 							<Badge color="purple">Short</Badge>
