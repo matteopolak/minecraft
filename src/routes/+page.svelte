@@ -9,13 +9,10 @@
 		ArrowKeyUp,
 		ArrowKeyDown,
 	} from 'flowbite-svelte';
-	import dayjs from 'dayjs';
-	import relativeTime from 'dayjs/plugin/relativeTime';
 	import TableSearch from '../components/TableSearch.svelte';
+	import Time from 'svelte-time';
 	import { page } from '$app/stores';
 	import type { LinkType } from 'flowbite-svelte/types';
-
-	dayjs.extend(relativeTime);
 
 	interface Row {
 		username: string;
@@ -197,8 +194,12 @@
 			<TableBodyRow>
 				<TableBodyCell>{row.username}</TableBodyCell>
 				<TableBodyCell>{row.frequency.toFixed(3)}</TableBodyCell>
-				<TableBodyCell>{dayjs(row.verifiedAt).fromNow()}</TableBodyCell>
-				<TableBodyCell>{dayjs(row.updatedAt).fromNow()}</TableBodyCell>
+				<TableBodyCell
+					><Time live relative timestamp={row.verifiedAt} /></TableBodyCell
+				>
+				<TableBodyCell
+					><Time live relative timestamp={row.updatedAt} /></TableBodyCell
+				>
 			</TableBodyRow>
 		{/each}
 		{#if data.length === 0}
