@@ -6,12 +6,10 @@
 		TableBodyCell,
 		TableBodyRow,
 		TableHead,
-		TableHeadCell,
-		ArrowKeyUp,
-		ArrowKeyDown,
 		Popover,
 		InformationCircle,
 	} from 'flowbite-svelte';
+	import SortableTableHeadCell from '../components/SortableTableHeadCell.svelte';
 	import TableSearch from '../components/TableSearch.svelte';
 	import Time from 'svelte-time';
 	import { page } from '$app/stores';
@@ -46,25 +44,84 @@
 	let pages: LinkType[] = [];
 
 	$: {
-		pages = [
-			{ name: '1', href: `/?token=${token}&page=1` },
-			{
-				name: (currentPage + 2).toString(),
-				href: `/?token=${token}&page=${currentPage + 2}`,
-			},
-			{
-				name: (currentPage + 3).toString(),
-				href: `/?token=${token}&page=${currentPage + 3}`,
-			},
-			{
-				name: (currentPage + 4).toString(),
-				href: `/?token=${token}&page=${currentPage + 4}`,
-			},
-			{
-				name: totalPages.toString(),
-				href: `/?token=${token}&page=${totalPages}`,
-			},
-		];
+		// show up to 5 pages, with the first and last page separated by ellipsis buttons
+		// if the current page is less than 5, show the first 5 pages, with the last page separated by ellipsis buttons
+		// if the current page is greater than the total number of pages minus 5, show the last 5 pages, with the first page separated by ellipsis buttons
+		// otherwise, show the current page and the 2 pages before and after it, with the first and last page separated by ellipsis buttons
+
+		const pagesToShow = 5;
+
+		if (totalPages <= pagesToShow) {
+			pages = Array.from({ length: totalPages }, (_, i) => ({
+				name: (i + 1).toString(),
+				href: `?page=${i + 1}`,
+				active: i === currentPage,
+			}));
+		} else if (currentPage < pagesToShow) {
+			pages = [
+				...Array.from({ length: pagesToShow }, (_, i) => ({
+					name: (i + 1).toString(),
+					href: `?token=${token}&page=${i + 1}`,
+					active: i === currentPage,
+				})),
+				{
+					name: '…',
+					href: `?token=${token}&page=${totalPages}`,
+					active: false,
+				},
+				{
+					name: totalPages.toString(),
+					href: `?token=${token}&page=${totalPages}`,
+					active: false,
+				},
+			];
+		} else if (currentPage > totalPages - pagesToShow) {
+			pages = [
+				{
+					name: '1',
+					href: `?token=${token}&page=1`,
+					active: false,
+				},
+				{
+					name: '…',
+					href: `?token=${token}&page=1`,
+					active: false,
+				},
+				...Array.from({ length: pagesToShow }, (_, i) => ({
+					name: (totalPages - pagesToShow + i + 1).toString(),
+					href: `?token=${token}&page=${totalPages - pagesToShow + i + 1}`,
+					active: totalPages - pagesToShow + i === currentPage,
+				})),
+			];
+		} else {
+			pages = [
+				{
+					name: '1',
+					href: `?token=${token}&page=1`,
+					active: false,
+				},
+				{
+					name: '…',
+					href: `?token=${token}&page=1`,
+					active: false,
+				},
+				...Array.from({ length: 3 }, (_, i) => ({
+					name: (currentPage - 1 + i + 1).toString(),
+					href: `?token=${token}&page=${currentPage - 1 + i + 1}`,
+					active: currentPage - 1 + i === currentPage,
+				})),
+				{
+					name: '…',
+					href: `?token=${token}&page=${totalPages}`,
+					active: false,
+				},
+				{
+					name: totalPages.toString(),
+					href: `?token=${token}&page=${totalPages}`,
+					active: false,
+				},
+			];
+		}
 	}
 
 	$: {
@@ -152,58 +209,38 @@
 		</p>
 	</caption>
 	<TableHead>
-		<TableHeadCell>
-			<button on:click={() => handleSort('length')}>
-				USERNAME
-
-				{#if sortColumn === 'length'}
-					{#if sortDirection === 'asc'}
-						<ArrowKeyUp class="inline w-4 h-4 ml-1" />
-					{:else}
-						<ArrowKeyDown class="inline w-4 h-4 ml-1" />
-					{/if}
-				{/if}
-			</button>
-		</TableHeadCell>
-		<TableHeadCell>
-			<button on:click={() => handleSort('frequency')}>
-				FREQUENCY
-
-				{#if sortColumn === 'frequency'}
-					{#if sortDirection === 'asc'}
-						<ArrowKeyUp class="inline w-4 h-4 ml-1" />
-					{:else}
-						<ArrowKeyDown class="inline w-4 h-4 ml-1" />
-					{/if}
-				{/if}
-			</button>
-		</TableHeadCell>
-		<TableHeadCell>
-			<button on:click={() => handleSort('verifiedAt')}>
-				CHECKED
-
-				{#if sortColumn === 'verifiedAt'}
-					{#if sortDirection === 'asc'}
-						<ArrowKeyUp class="inline w-4 h-4 ml-1" />
-					{:else}
-						<ArrowKeyDown class="inline w-4 h-4 ml-1" />
-					{/if}
-				{/if}
-			</button>
-		</TableHeadCell>
-		<TableHeadCell>
-			<button on:click={() => handleSort('updatedAt')}>
-				UPDATED
-
-				{#if sortColumn === 'updatedAt'}
-					{#if sortDirection === 'asc'}
-						<ArrowKeyUp class="inline w-4 h-4 ml-1" />
-					{:else}
-						<ArrowKeyDown class="inline w-4 h-4 ml-1" />
-					{/if}
-				{/if}
-			</button>
-		</TableHeadCell>
+		<SortableTableHeadCell
+			{handleSort}
+			{sortColumn}
+			{sortDirection}
+			column="length"
+		>
+			USERNAME
+		</SortableTableHeadCell>
+		<SortableTableHeadCell
+			{handleSort}
+			{sortColumn}
+			{sortDirection}
+			column="frequency"
+		>
+			FREQUENCY
+		</SortableTableHeadCell>
+		<SortableTableHeadCell
+			{handleSort}
+			{sortColumn}
+			{sortDirection}
+			column="verifiedAt"
+		>
+			CHECKED
+		</SortableTableHeadCell>
+		<SortableTableHeadCell
+			{handleSort}
+			{sortColumn}
+			{sortDirection}
+			column="updatedAt"
+		>
+			UPDATED
+		</SortableTableHeadCell>
 	</TableHead>
 	<TableBody tableBodyClass="divide-y">
 		{#each data as row}
