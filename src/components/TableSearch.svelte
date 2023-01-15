@@ -143,6 +143,7 @@
 										else tags.add('short');
 
 										tags = tags;
+										currentPage = 0;
 									}}
 								>
 									<ShortTag />
@@ -156,6 +157,7 @@
 										else tags.add('common');
 
 										tags = tags;
+										currentPage = 0;
 									}}
 								>
 									<CommonTag />
@@ -169,6 +171,7 @@
 										else tags.add('new');
 
 										tags = tags;
+										currentPage = 0;
 									}}
 								>
 									<NewTag />
@@ -182,6 +185,7 @@
 										else tags.add('liked');
 
 										tags = tags;
+										currentPage = 0;
 									}}
 								>
 									<Heart color="#f56565" />
