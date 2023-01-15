@@ -97,33 +97,57 @@
 						<Dropdown bind:open={dropdownOpen}>
 							{#if pageSize !== 10}
 								<DropdownItem
-									on:click={() => ((pageSize = 10), (dropdownOpen = false))}
-									>10</DropdownItem
+									on:click={() => (
+										(pageSize = 10), (currentPage = 0), (dropdownOpen = false)
+									)}
 								>
+									10
+								</DropdownItem>
 							{/if}
 							{#if pageSize !== 15}
 								<DropdownItem
-									on:click={() => ((pageSize = 15), (dropdownOpen = false))}
-									>15</DropdownItem
+									on:click={() => (
+										(pageSize = 15), (currentPage = 0), (dropdownOpen = false)
+									)}
 								>
+									15
+								</DropdownItem>
 							{/if}
 							{#if pageSize !== 25}
 								<DropdownItem
-									on:click={() => ((pageSize = 25), (dropdownOpen = false))}
-									>25</DropdownItem
+									on:click={() => (
+										(pageSize = 25), (currentPage = 0), (dropdownOpen = false)
+									)}
 								>
+									25
+								</DropdownItem>
 							{/if}
 							{#if pageSize !== 50}
 								<DropdownItem
-									on:click={() => ((pageSize = 50), (dropdownOpen = false))}
-									>50</DropdownItem
+									on:click={() => (
+										(pageSize = 50), (currentPage = 0), (dropdownOpen = false)
+									)}
 								>
+									50
+								</DropdownItem>
 							{/if}
 							{#if pageSize !== 100}
 								<DropdownItem
-									on:click={() => ((pageSize = 100), (dropdownOpen = false))}
-									>100</DropdownItem
+									on:click={() => (
+										(pageSize = 100), (currentPage = 0), (dropdownOpen = false)
+									)}
 								>
+									100
+								</DropdownItem>
+							{/if}
+							{#if pageSize !== 250}
+								<DropdownItem
+									on:click={() => (
+										(pageSize = 250), (currentPage = 0), (dropdownOpen = false)
+									)}
+								>
+									250
+								</DropdownItem>
 							{/if}
 						</Dropdown>
 					</li>

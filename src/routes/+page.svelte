@@ -295,7 +295,7 @@
 					</span>
 					{#if row.definition.length}
 						<InformationCircle
-							class="w-5 h-5 inline fill-blue-100 dark:fill-blue-200"
+							class="w-5 h-5 inline fill-blue-300 dark:fill-blue-200"
 							color=""
 							variation="solid"
 						/>
