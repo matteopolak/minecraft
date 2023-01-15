@@ -43,6 +43,7 @@
     "immer": "^9.0.17",
     "install": "^0.13.0",
     "materialize-css": "^1.0.0",
+    "svelte-material-icons": "^2.0.4",
     "svelte-material-ui": "^7.0.0-beta.0",
     "svelte-time": "^0.7.1"
   }

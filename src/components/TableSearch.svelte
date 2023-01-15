@@ -1,15 +1,22 @@
 <script lang="ts">
 	import classNames from 'classnames';
 	import {
+		Checkbox,
 		Chevron,
 		ChevronLeft,
 		ChevronRight,
 		Dropdown,
 		DropdownItem,
 	} from 'flowbite-svelte';
+	import FilterMenu from 'svelte-material-icons/FilterMenu.svelte';
 	import Pagination from './Pagination.svelte';
 	import type { LinkType } from 'flowbite-svelte/types';
 	import { setContext } from 'svelte';
+	import ShortTag from '../components/tags/ShortTag.svelte';
+	import CommonTag from '../components/tags/CommonTag.svelte';
+	import NewTag from '../components/tags/NewTag.svelte';
+	import Heart from 'svelte-material-icons/Heart.svelte';
+
 	export let divClass = 'relative overflow-x-auto shadow-md';
 	export let inputValue = '';
 	export let striped = false;
@@ -20,6 +27,7 @@
 	export let currentPage = 0;
 	export let pages: LinkType[] = [];
 	export let pageSize = 10;
+	export let tags: Set<string> = new Set();
 
 	let dropdownOpen = false;
 	const colors = {
@@ -87,22 +95,98 @@
 							><Chevron>{pageSize}</Chevron></button
 						>
 						<Dropdown bind:open={dropdownOpen}>
-							<DropdownItem
-								on:click={() => ((pageSize = 10), (dropdownOpen = false))}
-								>10</DropdownItem
-							>
-							<DropdownItem
-								on:click={() => ((pageSize = 25), (dropdownOpen = false))}
-								>25</DropdownItem
-							>
-							<DropdownItem
-								on:click={() => ((pageSize = 50), (dropdownOpen = false))}
-								>50</DropdownItem
-							>
-							<DropdownItem
-								on:click={() => ((pageSize = 100), (dropdownOpen = false))}
-								>100</DropdownItem
-							>
+							{#if pageSize !== 10}
+								<DropdownItem
+									on:click={() => ((pageSize = 10), (dropdownOpen = false))}
+									>10</DropdownItem
+								>
+							{/if}
+							{#if pageSize !== 15}
+								<DropdownItem
+									on:click={() => ((pageSize = 15), (dropdownOpen = false))}
+									>15</DropdownItem
+								>
+							{/if}
+							{#if pageSize !== 25}
+								<DropdownItem
+									on:click={() => ((pageSize = 25), (dropdownOpen = false))}
+									>25</DropdownItem
+								>
+							{/if}
+							{#if pageSize !== 50}
+								<DropdownItem
+									on:click={() => ((pageSize = 50), (dropdownOpen = false))}
+									>50</DropdownItem
+								>
+							{/if}
+							{#if pageSize !== 100}
+								<DropdownItem
+									on:click={() => ((pageSize = 100), (dropdownOpen = false))}
+									>100</DropdownItem
+								>
+							{/if}
+						</Dropdown>
+					</li>
+				</ul>
+				<ul>
+					<li>
+						<button
+							class="ml-2 text-center font-medium focus:ring-2 focus:outline-none inline-flex items-center justify-center px-3 py-2.5 text-sm font-medium border border-gray-300 text-gray-500 bg-white hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white rounded-lg"
+							><FilterMenu height={20} /></button
+						>
+						<Dropdown class="w-44 p-3 space-y-3 text-sm">
+							<li class="rounded p-2 hover:bg-gray-100 dark:hover:bg-gray-600">
+								<Checkbox
+									checked={tags.has('short')}
+									on:click={() => {
+										if (tags.has('short')) tags.delete('short');
+										else tags.add('short');
+
+										tags = tags;
+									}}
+								>
+									<ShortTag />
+								</Checkbox>
+							</li>
+							<li class="rounded p-2 hover:bg-gray-100 dark:hover:bg-gray-600">
+								<Checkbox
+									checked={tags.has('common')}
+									on:click={() => {
+										if (tags.has('common')) tags.delete('common');
+										else tags.add('common');
+
+										tags = tags;
+									}}
+								>
+									<CommonTag />
+								</Checkbox>
+							</li>
+							<li class="rounded p-2 hover:bg-gray-100 dark:hover:bg-gray-600">
+								<Checkbox
+									checked={tags.has('new')}
+									on:click={() => {
+										if (tags.has('new')) tags.delete('new');
+										else tags.add('new');
+
+										tags = tags;
+									}}
+								>
+									<NewTag />
+								</Checkbox>
+							</li>
+							<li class="rounded p-2 hover:bg-gray-100 dark:hover:bg-gray-600">
+								<Checkbox
+									checked={tags.has('liked')}
+									on:click={() => {
+										if (tags.has('liked')) tags.delete('liked');
+										else tags.add('liked');
+
+										tags = tags;
+									}}
+								>
+									<Heart color="#f56565" />
+								</Checkbox>
+							</li>
 						</Dropdown>
 					</li>
 				</ul>

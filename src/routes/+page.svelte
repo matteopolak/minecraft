@@ -1,7 +1,6 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import {
-		Badge,
 		TableBody,
 		TableBodyCell,
 		TableBodyRow,
@@ -11,9 +10,14 @@
 	} from 'flowbite-svelte';
 	import SortableTableHeadCell from '../components/SortableTableHeadCell.svelte';
 	import TableSearch from '../components/TableSearch.svelte';
+	import HeartOutline from 'svelte-material-icons/HeartOutline.svelte';
+	import Heart from 'svelte-material-icons/Heart.svelte';
 	import Time from 'svelte-time';
 	import { page } from '$app/stores';
 	import type { LinkType } from 'flowbite-svelte/types';
+	import ShortTag from '../components/tags/ShortTag.svelte';
+	import CommonTag from '../components/tags/CommonTag.svelte';
+	import NewTag from '../components/tags/NewTag.svelte';
 
 	interface Row {
 		username: string;
@@ -21,6 +25,7 @@
 		verifiedAt: string;
 		updatedAt: string;
 		definition: string[];
+		liked?: boolean;
 	}
 
 	const debounce = (value: string) => {
@@ -42,6 +47,7 @@
 	let sortDirection = 'desc';
 	let token = '';
 	let pages: LinkType[] = [];
+	let tags: Set<string> = new Set();
 
 	$: {
 		// show up to 5 pages, with the first and last page separated by ellipsis buttons
@@ -138,7 +144,14 @@
 	onMount(async () => {
 		token = $page.url.searchParams.get('token') ?? 'none';
 
-		fetchData(currentPage, pageSize, searchTerm, sortColumn, sortDirection);
+		fetchData(
+			currentPage,
+			pageSize,
+			searchTerm,
+			sortColumn,
+			sortDirection,
+			tags
+		);
 	});
 
 	function handleSort(column: any) {
@@ -154,8 +167,27 @@
 
 	$: {
 		if (token) {
-			fetchData(currentPage, pageSize, searchTerm, sortColumn, sortDirection);
+			fetchData(
+				currentPage,
+				pageSize,
+				searchTerm,
+				sortColumn,
+				sortDirection,
+				tags
+			);
 		}
+	}
+
+	function likeName(username: string) {
+		return fetch(
+			`https://api.matteopolak.com/names/${username}/like?token=${token}`
+		);
+	}
+
+	function dislikeName(username: string) {
+		return fetch(
+			`https://api.matteopolak.com/names/${username}/dislike?token=${token}`
+		);
 	}
 
 	async function fetchData(
@@ -163,17 +195,18 @@
 		pageSize: number,
 		searchTerm: string,
 		sortColumn: string,
-		sortDirection: string
+		sortDirection: string,
+		tags: Set<string>
 	) {
 		const response = await fetch(
 			`https://api.matteopolak.com/names?token=${token}&offset=${
 				currentPage * pageSize
 			}&limit=${pageSize}${
 				searchTerm ? `&search=${searchTerm}` : ''
-			}&column=${sortColumn}&sort=${sortDirection}`
+			}&column=${sortColumn}&sort=${sortDirection}${
+				tags.size > 0 ? `&tags=${[...tags].join(',')}` : ''
+			}`
 		);
-
-		console.log(response.status);
 
 		if (response.status !== 200) {
 			data = [];
@@ -196,6 +229,7 @@
 	bind:inputValue={searchTermDebounced}
 	bind:currentPage
 	bind:pageSize
+	bind:tags
 	{pages}
 	{totalPages}
 >
@@ -246,7 +280,28 @@
 		{#each data as row}
 			<TableBodyRow>
 				<TableBodyCell>
-					{row.username}
+					<button
+						class="translate-y-0.5"
+						on:click={() => {
+							row.liked = !row.liked;
+							row = row;
+
+							if (row.liked) {
+								likeName(row.username);
+							} else {
+								dislikeName(row.username);
+							}
+						}}
+					>
+						{#if row.liked}
+							<Heart color="#f56565" />
+						{:else}
+							<HeartOutline color="#f56565" />
+						{/if}
+					</button>
+					<span class="pl-2">
+						{row.username}
+					</span>
 					{#if row.definition.length}
 						<InformationCircle
 							class="w-5 h-5 inline fill-blue-100 dark:fill-blue-200"
@@ -264,13 +319,13 @@
 					{/if}
 					<span style="float: right">
 						{#if row.username.length <= 7}
-							<Badge color="purple">Short</Badge>
+							<ShortTag />
 						{/if}
 						{#if row.frequency >= 0.5}
-							<Badge color="pink">Common</Badge>
+							<CommonTag />
 						{/if}
-						{#if new Date(row.updatedAt).getTime() > Date.now() - 86_400_000}
-							<Badge color="green">New</Badge>
+						{#if new Date(row.updatedAt).getTime() >= Date.now() - 86_400_000}
+							<NewTag />
 						{/if}
 					</span>
 				</TableBodyCell>
