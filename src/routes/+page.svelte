@@ -143,15 +143,6 @@
 
 	onMount(async () => {
 		token = $page.url.searchParams.get('token') ?? 'none';
-
-		fetchData(
-			currentPage,
-			pageSize,
-			searchTerm,
-			sortColumn,
-			sortDirection,
-			tags
-		);
 	});
 
 	function handleSort(column: any) {
