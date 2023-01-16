@@ -16,7 +16,7 @@
 	import CommonTag from '../components/tags/CommonTag.svelte';
 	import NewTag from '../components/tags/NewTag.svelte';
 	import Heart from 'svelte-material-icons/Heart.svelte';
-	import NameTag from './tags/NameTag.svelte';
+	import NameTag from '../components/tags/NameTag.svelte';
 
 	export let divClass = 'relative overflow-x-auto shadow-md';
 	export let inputValue = '';

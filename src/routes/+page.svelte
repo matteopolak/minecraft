@@ -18,7 +18,7 @@
 	import ShortTag from '../components/tags/ShortTag.svelte';
 	import CommonTag from '../components/tags/CommonTag.svelte';
 	import NewTag from '../components/tags/NewTag.svelte';
-	import NameTag from 'src/components/tags/NameTag.svelte';
+	import NameTag from '../components/tags/NameTag.svelte';
 
 	interface Row {
 		username: string;
