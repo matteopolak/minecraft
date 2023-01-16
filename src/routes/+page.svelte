@@ -18,6 +18,7 @@
 	import ShortTag from '../components/tags/ShortTag.svelte';
 	import CommonTag from '../components/tags/CommonTag.svelte';
 	import NewTag from '../components/tags/NewTag.svelte';
+	import NameTag from 'src/components/tags/NameTag.svelte';
 
 	interface Row {
 		username: string;
@@ -26,6 +27,7 @@
 		updatedAt: string;
 		definition: string[];
 		liked?: boolean;
+		tags: string[];
 	}
 
 	const debounce = (value: string) => {
@@ -309,6 +311,9 @@
 						</Popover>
 					{/if}
 					<span style="float: right">
+						{#if row.tags.includes('name')}
+							<NameTag />
+						{/if}
 						{#if row.username.length <= 7}
 							<ShortTag />
 						{/if}

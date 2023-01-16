@@ -16,6 +16,7 @@
 	import CommonTag from '../components/tags/CommonTag.svelte';
 	import NewTag from '../components/tags/NewTag.svelte';
 	import Heart from 'svelte-material-icons/Heart.svelte';
+	import NameTag from './tags/NameTag.svelte';
 
 	export let divClass = 'relative overflow-x-auto shadow-md';
 	export let inputValue = '';
@@ -159,6 +160,20 @@
 							><FilterMenu height={20} /></button
 						>
 						<Dropdown class="w-44 p-3 space-y-3 text-sm">
+							<li class="rounded p-2 hover:bg-gray-100 dark:hover:bg-gray-600">
+								<Checkbox
+									checked={tags.has('name')}
+									on:click={() => {
+										if (tags.has('name')) tags.delete('name');
+										else tags.add('name');
+
+										tags = tags;
+										currentPage = 0;
+									}}
+								>
+									<NameTag />
+								</Checkbox>
+							</li>
 							<li class="rounded p-2 hover:bg-gray-100 dark:hover:bg-gray-600">
 								<Checkbox
 									checked={tags.has('short')}
