@@ -19,6 +19,7 @@
 	import CommonTag from '../components/tags/CommonTag.svelte';
 	import NewTag from '../components/tags/NewTag.svelte';
 	import NameTag from '../components/tags/NameTag.svelte';
+	import TakenTag from '../components/tags/TakenTag.svelte';
 
 	interface Row {
 		username: string;
@@ -26,6 +27,7 @@
 		verifiedAt: string;
 		updatedAt: string;
 		definition: string[];
+		taken: boolean;
 		liked?: boolean;
 		tags: string[];
 	}
@@ -322,6 +324,9 @@
 						{/if}
 						{#if new Date(row.updatedAt).getTime() >= Date.now() - 86_400_000}
 							<NewTag />
+						{/if}
+						{#if row.taken}
+							<TakenTag />
 						{/if}
 					</span>
 				</TableBodyCell>
