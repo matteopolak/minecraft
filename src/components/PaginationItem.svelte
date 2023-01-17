@@ -12,7 +12,7 @@
 	const table = getContext('table');
 	let defaultClass;
 	$: defaultClass = classNames(
-		'block py-2.5',
+		'block py-3',
 		group ? 'px-3' : 'px-4',
 		'text-sm font-medium',
 		table || 'border border-gray-300',
