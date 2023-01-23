@@ -26,9 +26,9 @@
 		frequency: number;
 		verifiedAt: string;
 		updatedAt: string;
-		definition: string[];
+		definition: string[] | null;
 		taken: boolean;
-		liked?: boolean;
+		liked: boolean;
 		tags: string[];
 	}
 
@@ -297,7 +297,7 @@
 					<span class="pl-2">
 						{row.username}
 					</span>
-					{#if row.definition.length}
+					{#if row.definition?.length}
 						<InformationCircle
 							class="w-5 h-5 inline fill-blue-300 dark:fill-blue-200"
 							color=""
