@@ -22,6 +22,12 @@
 	import TakenTag from '../components/tags/TakenTag.svelte';
 	import BannedTag from 'src/components/tags/BannedTag.svelte';
 
+	const enum Status {
+		Unknown = 0,
+		Available = 1,
+		Taken = 2,
+		Banned = 3,
+	}
 	interface Row {
 		username: string;
 		frequency: number;
@@ -30,7 +36,7 @@
 		definition: string[] | null;
 		liked: boolean;
 		tags: string[] | null;
-		status: 'available' | 'taken' | 'banned';
+		status: Status;
 	}
 
 	const debounce = (value: string) => {
@@ -336,10 +342,10 @@
 						{#if new Date(row.updatedAt).getTime() >= Date.now() - 86_400_000}
 							<NewTag />
 						{/if}
-						{#if row.status === 'taken'}
+						{#if row.status === Status.Taken}
 							<TakenTag />
 						{/if}
-						{#if row.status === 'banned'}
+						{#if row.status === Status.Banned}
 							<BannedTag />
 						{/if}
 					</span>
