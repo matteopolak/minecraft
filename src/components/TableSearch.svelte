@@ -18,6 +18,7 @@
 	import Heart from 'svelte-material-icons/Heart.svelte';
 	import NameTag from '../components/tags/NameTag.svelte';
 	import TakenTag from './tags/TakenTag.svelte';
+	import BannedTag from './tags/BannedTag.svelte';
 
 	export let divClass = 'relative overflow-x-auto shadow-md';
 	export let inputValue = '';
@@ -242,6 +243,20 @@
 								}}
 							>
 								<TakenTag />
+							</Checkbox>
+						</li>
+						<li class="rounded p-2 hover:bg-gray-100 dark:hover:bg-gray-600">
+							<Checkbox
+								checked={tags.has('banned')}
+								on:click={() => {
+									if (tags.has('banned')) tags.delete('banned');
+									else tags.add('banned');
+
+									tags = tags;
+									currentPage = 0;
+								}}
+							>
+								<BannedTag />
 							</Checkbox>
 						</li>
 					</Dropdown>

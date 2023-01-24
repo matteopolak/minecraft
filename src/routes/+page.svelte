@@ -20,7 +20,7 @@
 	import NewTag from '../components/tags/NewTag.svelte';
 	import NameTag from '../components/tags/NameTag.svelte';
 	import TakenTag from '../components/tags/TakenTag.svelte';
-	import BannedTag from 'src/components/tags/BannedTag.svelte';
+	import BannedTag from '../components/tags/BannedTag.svelte';
 
 	const enum Status {
 		Unknown = 0,
