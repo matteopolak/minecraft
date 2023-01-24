@@ -20,6 +20,7 @@
 	import NewTag from '../components/tags/NewTag.svelte';
 	import NameTag from '../components/tags/NameTag.svelte';
 	import TakenTag from '../components/tags/TakenTag.svelte';
+	import BannedTag from 'src/components/tags/BannedTag.svelte';
 
 	interface Row {
 		username: string;
@@ -27,9 +28,9 @@
 		verifiedAt: string;
 		updatedAt: string;
 		definition: string[] | null;
-		valid: boolean;
 		liked: boolean;
 		tags: string[] | null;
+		status: 'available' | 'taken' | 'banned';
 	}
 
 	const debounce = (value: string) => {
@@ -335,8 +336,11 @@
 						{#if new Date(row.updatedAt).getTime() >= Date.now() - 86_400_000}
 							<NewTag />
 						{/if}
-						{#if !row.valid}
+						{#if row.status === 'taken'}
 							<TakenTag />
+						{/if}
+						{#if row.status === 'banned'}
+							<BannedTag />
 						{/if}
 					</span>
 				</TableBodyCell>

@@ -162,6 +162,20 @@
 					<Dropdown class="w-44 p-3 space-y-3 text-sm">
 						<li class="rounded p-2 hover:bg-gray-100 dark:hover:bg-gray-600">
 							<Checkbox
+								checked={tags.has('liked')}
+								on:click={() => {
+									if (tags.has('liked')) tags.delete('liked');
+									else tags.add('liked');
+
+									tags = tags;
+									currentPage = 0;
+								}}
+							>
+								<Heart color="#f56565" />
+							</Checkbox>
+						</li>
+						<li class="rounded p-2 hover:bg-gray-100 dark:hover:bg-gray-600">
+							<Checkbox
 								checked={tags.has('name')}
 								on:click={() => {
 									if (tags.has('name')) tags.delete('name');
@@ -228,20 +242,6 @@
 								}}
 							>
 								<TakenTag />
-							</Checkbox>
-						</li>
-						<li class="rounded p-2 hover:bg-gray-100 dark:hover:bg-gray-600">
-							<Checkbox
-								checked={tags.has('liked')}
-								on:click={() => {
-									if (tags.has('liked')) tags.delete('liked');
-									else tags.add('liked');
-
-									tags = tags;
-									currentPage = 0;
-								}}
-							>
-								<Heart color="#f56565" />
 							</Checkbox>
 						</li>
 					</Dropdown>
