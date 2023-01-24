@@ -27,9 +27,9 @@
 		verifiedAt: string;
 		updatedAt: string;
 		definition: string[] | null;
-		taken: boolean;
+		valid: boolean;
 		liked: boolean;
-		tags: string[];
+		tags: string[] | null;
 	}
 
 	const debounce = (value: string) => {
@@ -174,15 +174,19 @@
 	}
 
 	function likeName(username: string) {
-		return fetch(
-			`https://api.matteopolak.com/names/${username}/like?token=${token}`
-		);
+		return fetch(`https://api.matteopolak.com/names/${username}/like`, {
+			headers: {
+				Authorization: token,
+			},
+		});
 	}
 
 	function dislikeName(username: string) {
-		return fetch(
-			`https://api.matteopolak.com/names/${username}/dislike?token=${token}`
-		);
+		return fetch(`https://api.matteopolak.com/names/${username}/dislike`, {
+			headers: {
+				Authorization: token,
+			},
+		});
 	}
 
 	async function fetchData(
@@ -193,7 +197,8 @@
 		sortDirection: string,
 		tags: Set<string>
 	) {
-		const response = await fetch('https://api.matteopolak.com/names', {
+		const response = await fetch('http://localhost:8080/names', {
+			//'https://api.matteopolak.com/names', {
 			method: 'POST',
 			body: JSON.stringify({
 				offset: currentPage * pageSize,
@@ -218,7 +223,7 @@
 
 		const json = await response.json();
 
-		data = json.results;
+		data = json.data;
 		totalPages = Math.ceil(json.total / pageSize);
 	}
 </script>
@@ -319,7 +324,7 @@
 						</Popover>
 					{/if}
 					<span style="float: right">
-						{#if row.tags.includes('name')}
+						{#if row.tags?.includes('name')}
 							<NameTag />
 						{/if}
 						{#if row.username.length <= 7}
@@ -331,7 +336,7 @@
 						{#if new Date(row.updatedAt).getTime() >= Date.now() - 86_400_000}
 							<NewTag />
 						{/if}
-						{#if row.taken}
+						{#if !row.valid}
 							<TakenTag />
 						{/if}
 					</span>
