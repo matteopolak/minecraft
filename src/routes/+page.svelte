@@ -197,8 +197,7 @@
 		sortDirection: string,
 		tags: Set<string>
 	) {
-		const response = await fetch('http://localhost:8080/names', {
-			//'https://api.matteopolak.com/names', {
+		const response = await fetch('https://api.matteopolak.com/names', {
 			method: 'POST',
 			body: JSON.stringify({
 				offset: currentPage * pageSize,
