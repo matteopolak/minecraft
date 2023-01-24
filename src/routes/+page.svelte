@@ -193,15 +193,21 @@
 		sortDirection: string,
 		tags: Set<string>
 	) {
-		const response = await fetch(
-			`https://api.matteopolak.com/names?token=${token}&offset=${
-				currentPage * pageSize
-			}&limit=${pageSize}${
-				searchTerm ? `&search=${searchTerm}` : ''
-			}&column=${sortColumn}&sort=${sortDirection}${
-				tags.size > 0 ? `&tags=${[...tags].join(',')}` : ''
-			}`
-		);
+		const response = await fetch('https://api.matteopolak.com/names', {
+			method: 'POST',
+			body: JSON.stringify({
+				offset: currentPage * pageSize,
+				limit: pageSize,
+				search: searchTerm || undefined,
+				column: sortColumn,
+				sort: sortDirection,
+				tags: Array.from(tags),
+			}),
+			headers: {
+				'Content-Type': 'application/json',
+				Authorization: token,
+			},
+		});
 
 		if (response.status !== 200) {
 			data = [];
