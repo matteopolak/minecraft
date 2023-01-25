@@ -27,7 +27,9 @@
 		Available = 1,
 		Taken = 2,
 		Banned = 3,
+		BatchAvailable = 4,
 	}
+
 	interface Row {
 		username: string;
 		frequency: number;
