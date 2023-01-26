@@ -28,6 +28,7 @@
 		Taken = 2,
 		Banned = 3,
 		BatchAvailable = 4,
+		BatchTaken = 4,
 	}
 
 	interface Row {
@@ -344,7 +345,7 @@
 						{#if new Date(row.updatedAt).getTime() >= Date.now() - 86_400_000}
 							<NewTag />
 						{/if}
-						{#if row.status === Status.Taken}
+						{#if row.status === Status.Taken || row.status === Status.BatchTaken}
 							<TakenTag />
 						{/if}
 						{#if row.status === Status.Banned}
