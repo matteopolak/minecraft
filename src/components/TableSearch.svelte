@@ -1,13 +1,20 @@
 <script lang="ts">
 	import classNames from 'classnames';
 	import {
+		A,
+		Button,
 		Checkbox,
 		Chevron,
 		ChevronLeft,
 		ChevronRight,
 		Dropdown,
 		DropdownItem,
+		Input,
+		Label,
+		Popover,
+		Textarea,
 	} from 'flowbite-svelte';
+	import Plus from 'svelte-material-icons/Plus.svelte';
 	import FilterMenu from 'svelte-material-icons/FilterMenu.svelte';
 	import Pagination from './Pagination.svelte';
 	import type { LinkType } from 'flowbite-svelte/types';
@@ -31,6 +38,7 @@
 	export let pages: LinkType[] = [];
 	export let pageSize = 10;
 	export let tags: Set<string> = new Set();
+	export let token = '';
 
 	let dropdownOpen = false;
 	const colors = {
@@ -260,6 +268,81 @@
 							</Checkbox>
 						</li>
 					</Dropdown>
+				</li>
+			</ul>
+			<ul>
+				<li>
+					<button
+						class="gap-2 text-center font-medium focus:ring-2 focus:outline-none inline-flex items-center justify-center px-3 py-3 text-sm font-medium border border-gray-300 text-gray-500 bg-white hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white rounded-lg"
+						><Plus />Snipe</button
+					>
+					<Popover
+						placement="right"
+						class="w-64 whitespace-normal"
+						arrow={false}
+					>
+						<div class="grid gap-2 mb-6 md:grid-cols-2">
+							<div>
+								<Label for="username" class="mb-1">Username</Label>
+								<Input type="text" id="username" placeholder="Notch" required />
+							</div>
+							<div class="mb-1">
+								<Label for="password" class="mb-1">Workers</Label>
+								<Input type="number" id="workers" placeholder="1" required />
+							</div>
+							<div class="mb-1">
+								<Label for="email" class="mb-1">Email address</Label>
+								<Input
+									type="email"
+									id="email"
+									placeholder="notch@minecraft.net"
+									required
+								/>
+							</div>
+							<div class="mb-1">
+								<Label for="password" class="mb-1">Password</Label>
+								<Input
+									type="text"
+									id="password"
+									placeholder="•••••••••"
+									required
+								/>
+							</div>
+							<div class="mb-1 space-x-1">
+								<Button
+									on:click={() => {
+										// @ts-ignore
+										const email = document.getElementById('email').value;
+										const password =
+											// @ts-ignore
+											document.getElementById('password').value;
+										const username =
+											// @ts-ignore
+											document.getElementById('username').value;
+										const workers =
+											// @ts-ignore
+											document.getElementById('workers').valueAsNumber;
+
+										if (email && password && username && !isNaN(workers)) {
+											fetch('https://api.matteopolak.com/snipe', {
+												method: 'POST',
+												body: JSON.stringify({
+													email,
+													password,
+													username,
+													workers,
+												}),
+												headers: {
+													'Content-Type': 'application/json',
+													token,
+												},
+											});
+										}
+									}}>Snipe</Button
+								>
+							</div>
+						</div>
+					</Popover>
 				</li>
 			</ul>
 		</div>

@@ -245,6 +245,7 @@
 	bind:currentPage
 	bind:pageSize
 	bind:tags
+	{token}
 	{pages}
 	{totalPages}
 >
