@@ -334,7 +334,7 @@
 												}),
 												headers: {
 													'Content-Type': 'application/json',
-													token,
+													Authorization: token,
 												},
 											});
 										}
