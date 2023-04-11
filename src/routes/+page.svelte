@@ -28,7 +28,7 @@
 		Taken = 2,
 		Banned = 3,
 		BatchAvailable = 4,
-		BatchTaken = 4,
+		BatchTaken = 5,
 	}
 
 	interface Row {
